@@ -74,26 +74,28 @@ export function About() {
 +91 85248 58324 | maheshwaran852485@gmail.com
 Chennai, Tamil Nadu
 
-Motivated Software Developer with hands-on experience building full-stack web applications using MongoDB, Express.js, React.js, and Node.js (MERN Stack). Skilled in developing responsive user interfaces, RESTful APIs, database management, and implementing CRUD operations. Proficient in JavaScript (ES6+), MySQL, Git, GitHub, and modern web development best practices. Passionate about creating scalable, maintainable web applications.`,
+Motivated fresher MERN Stack Developer with hands-on experience building full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Proficient in JavaScript (ES6+), MySQL, RESTful API development, Git, and GitHub. Passionate about creating scalable, responsive web applications and eager to contribute to a dynamic development team.`,
 
     'experience.json': `[
   {
-    "program": "MERN Stack Development Training",
+    "role": "MERN Stack Developer Trainee",
+    "timeline": "Feb 2026 – Present",
     "provider": "Besant Technologies",
     "location": "Velachery, Chennai",
-    "timeline": "2026",
-    "modules": [
-      "Mastering MongoDB, Express.js, React.js, and Node.js for full-stack web development.",
-      "Building and deploying full-stack applications with frontend-backend integration.",
-      "Working with REST APIs, database management, and modern JavaScript (ES6+) practices."
+    "bullets": [
+      "Building full-stack applications using the MERN Stack with frontend–backend integration.",
+      "Developing RESTful APIs, database schemas, and responsive React.js user interfaces.",
+      "Collaborating on real-world projects, applying MVC architecture and component-based design.",
+      "Practising version control and API testing using Git, GitHub, and Postman."
     ]
   }
 ]`,
 
     'education.json': `{
-  "degree": "B.E. Computer Science and Engineering",
-  "institution": "Dhanalakshmi Srinivasan Engineering College",
-  "period": "2022 - 2026",
+  "degree": "B.E. – Computer Science and Engineering",
+  "institution": "Dhanalakshmi Srinivasan Engineering College (A)",
+  "location": "Chennai",
+  "period": "2022 – 2026",
   "evaluation": {
     "metric": "CGPA",
     "score": 7.5
@@ -101,41 +103,22 @@ Motivated Software Developer with hands-on experience building full-stack web ap
 }`,
 
     'certifications.yaml': `certificates:
-  - name: "What Is Generative AI?"
-    provider: "LinkedIn Learning"
-    date: "Sep 23, 2024"
-    doc: "/LinkedIn_Learning_What_is_Generative_AI.pdf"
-  - name: "ChatGPT for Beginners"
-    provider: "Great Learning Academy"
-    date: "September 2024"
-    verify: "https://www.mygreatlearning.com/certificate/CXCFHOLI"
-    doc: "/Great_Learning_ChatGPT_for_Beginners.pdf"
-  - name: "Completion of Internship in Python"
-    provider: "System Tron"
-    date: "14-JULY-2025 to 10-AUG-2025"
-    doc: "/SystemTron_Python_Internship_Certificate.pdf"
-  - name: "Introduction to Cyber Security"
-    provider: "Great Learning Academy"
-    date: "October 2024"
-    verify: "https://www.mygreatlearning.com/certificate/XTXCFGZF"
-    doc: "/Great_Learning_Introduction_to_Cyber_Security.pdf"
-  - name: "Introduction to Artificial Intelligence"
-    provider: "Great Learning Academy"
-    date: "September 2024"
-    verify: "https://www.mygreatlearning.com/certificate/KNIEHZIB"
-    doc: "/Great_Learning_Introduction_to_Artificial_Intelligence.pdf"
-  - name: "PowerBI Workshop"
-    provider: "OfficeMaster"
-    date: "May 4th, 2025"
-    doc: "/OfficeMaster_PowerBI_Workshop_Certificate.pdf"
-  - name: "UiPath Automation Fundamentals"
-    provider: "UiPath Academy"
-    date: "Oct 21, 2024"
-    doc: "/UiPath_Automation_Implementation_Methodology_Fundamentals.pdf"
   - name: "IBM Full-Stack JavaScript Developer Professional Certificate"
     status: "In Progress"
   - name: "MERN Stack Development Training"
     provider: "Besant Technologies"
+  - name: "PL-300: Microsoft Power BI"
+    provider: "OfficeMaster"
+    doc: "/OfficeMaster_PowerBI_Workshop_Certificate.pdf"
+  - name: "AI Revolution in Cyber Security / Cyber Security"
+    provider: "Great Learning Academy"
+    doc: "/Great_Learning_Introduction_to_Cyber_Security.pdf"
+  - name: "Data Science Foundations"
+    provider: "Great Learning Academy"
+    doc: "/Great_Learning_Introduction_to_Artificial_Intelligence.pdf"
+  - name: "UiPath Automation Implementation Methodology Fundamentals"
+    provider: "UiPath Academy"
+    doc: "/UiPath_Automation_Implementation_Methodology_Fundamentals.pdf"
 `
   };
 
