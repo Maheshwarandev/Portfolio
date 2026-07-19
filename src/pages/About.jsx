@@ -76,6 +76,8 @@ Chennai, Tamil Nadu
 
 Motivated fresher MERN Stack Developer with hands-on experience building full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Proficient in JavaScript (ES6+), MySQL, RESTful API development, Git, and GitHub. Passionate about creating scalable, responsive web applications and eager to contribute to a dynamic development team.`,
 
+    'resume.pdf': '/Maheshwaran_S_Resume.pdf',
+
     'experience.json': `[
   {
     "role": "MERN Stack Developer Trainee",
@@ -309,6 +311,15 @@ Motivated fresher MERN Stack Developer with hands-on experience building full-st
                   </div>
 
                   <div className="leading-relaxed whitespace-pre-wrap select-text text-zinc-300 pr-12">
+                    {activeFile === 'resume.pdf' && (
+                      <div className="w-full h-[400px] bg-zinc-950 rounded-xl overflow-hidden border border-zinc-800 my-2">
+                        <PdfCanvasPreview 
+                          pdfUrl="/Maheshwaran_S_Resume.pdf"
+                          title="MAHESHWARAN S - Official Resume PDF"
+                        />
+                      </div>
+                    )}
+
                     {activeFile === 'summary.md' && (
                       <div className="space-y-2">
                         <div>
@@ -447,6 +458,50 @@ Motivated fresher MERN Stack Developer with hands-on experience building full-st
           <p className="text-xs text-[var(--text-secondary)]">
             Certifications, workshops, and verified credentials earned along the way
           </p>
+        </div>
+
+        {/* FEATURED OFFICIAL RESUME PREVIEW CARD */}
+        <div className="bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-transparent border border-indigo-500/30 rounded-2xl p-6 shadow-sm space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)]/60 pb-4">
+            <div>
+              <span className="text-[10px] font-mono font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                ★ FEATURED DOCUMENT
+              </span>
+              <h3 className="font-heading text-xl font-extrabold text-[var(--text-primary)]">
+                Official Curriculum Vitae / Resume PDF
+              </h3>
+              <p className="text-xs text-[var(--text-secondary)] font-mono mt-0.5">
+                MAHESHWARAN S — MERN Stack Developer (Chennai, TN)
+              </p>
+            </div>
+
+            <div className="flex items-center space-x-2 shrink-0">
+              <a 
+                href="/Maheshwaran_S_Resume.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="px-3.5 py-1.5 rounded-lg border border-[var(--border-color)] bg-zinc-50 dark:bg-zinc-900 text-[var(--text-primary)] text-xs font-mono font-bold flex items-center space-x-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer"
+              >
+                <ExternalLink size={13} />
+                <span>Full Screen</span>
+              </a>
+              <a 
+                href="/Maheshwaran_S_Resume.pdf"
+                download="Maheshwaran_S_Resume.pdf"
+                className="px-3.5 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-mono font-bold flex items-center space-x-1.5 hover:bg-indigo-500 transition shadow-sm cursor-pointer"
+              >
+                <Download size={13} />
+                <span>Download PDF</span>
+              </a>
+            </div>
+          </div>
+
+          <div className="w-full aspect-[1.41/1] max-h-[500px] bg-zinc-950 rounded-xl overflow-hidden border border-zinc-800 relative shadow-inner">
+            <PdfCanvasPreview 
+              pdfUrl="/Maheshwaran_S_Resume.pdf"
+              title="MAHESHWARAN S - Official Resume"
+            />
+          </div>
         </div>
 
         {/* Grid of Certificate Cards */}
