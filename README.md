@@ -4,9 +4,9 @@
 ![React](https://img.shields.io/badge/React-19.0-61DAFB?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8.1-646CFF?logo=vite&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.0-38B2AC?logo=tailwind-css&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-REST_API-339933?logo=node.js&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-Relational_DB-4479A1?logo=mysql&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-NoSQL_DB-47A248?logo=mongodb&logoColor=white)
+![Deployment](https://img.shields.io/badge/Vercel-Live_Deployment-000000?logo=vercel&logoColor=white)
+
+🌐 **Live Deployed Portfolio**: [https://portfolio-steel-kappa-b53wus0hc9.vercel.app/](https://portfolio-steel-kappa-b53wus0hc9.vercel.app/)
 
 A high-performance, developer-first web application and portfolio workspace built for **Maheshwaran S** (MERN Stack Developer & Full Stack Software Engineer). Designed with modern dark mode aesthetics, glassmorphism, dynamic GitHub REST API integration, interactive terminal explorer, and vector PDF certificate previews.
 
