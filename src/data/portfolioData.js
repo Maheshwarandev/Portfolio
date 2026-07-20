@@ -442,7 +442,7 @@ const IncidentSchema = new Schema({
     image: "inventory-management",
     techStack: ["React.js", "Node.js", "Express.js", "MySQL", "Tailwind CSS", "Postman", "Git"],
     github: "https://github.com/Maheshwarandev/inventory-management-system",
-    live: "#",
+    live: "https://ims-frontend-apfa.onrender.com",
     features: [
       "Developed a web dashboard to add, update, and search warehouse inventory items.",
       "Implemented warning flags and alerts when product quantities fall below minimum thresholds.",
