@@ -148,7 +148,7 @@ export function Projects() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-1 gap-2">
+              <div className="flex flex-wrap items-center justify-between pt-1 gap-2">
                 <div className="flex items-center space-x-3">
                   <a 
                     href={project.github} 
@@ -159,7 +159,7 @@ export function Projects() {
                     <Github size={14} />
                     <span>Source</span>
                   </a>
-                  
+
                   {/* Quick Preview Modal Trigger Button */}
                   <button 
                     onClick={() => setSelectedProject(project)}
@@ -168,6 +168,19 @@ export function Projects() {
                     <Eye size={13} />
                     <span>Quick Preview</span>
                   </button>
+
+                  {/* Live Demo link placed on the RIGHT SIDE of Quick Preview */}
+                  {project.live && project.live !== '#' && (
+                    <a 
+                      href={project.live} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="text-xs font-mono px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/30 hover:bg-emerald-500/20 transition flex items-center space-x-1"
+                    >
+                      <ExternalLink size={12} />
+                      <span>Live Demo</span>
+                    </a>
+                  )}
                 </div>
 
                 <Link 
@@ -256,16 +269,30 @@ export function Projects() {
               </div>
 
               {/* Modal Actions */}
-              <div className="flex items-center justify-between pt-4 border-t border-[var(--border-color)]">
-                <a 
-                  href={selectedProject.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center space-x-2 text-xs font-mono border border-[var(--border-color)] rounded-xl px-4 py-2 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-bold hover:opacity-90 transition cursor-pointer"
-                >
-                  <Github size={15} />
-                  <span>View Repository Code</span>
-                </a>
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-[var(--border-color)]">
+                <div className="flex items-center space-x-2">
+                  <a 
+                    href={selectedProject.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center space-x-2 text-xs font-mono border border-[var(--border-color)] rounded-xl px-4 py-2 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-bold hover:opacity-90 transition cursor-pointer"
+                  >
+                    <Github size={15} />
+                    <span>View Repository Code</span>
+                  </a>
+
+                  {selectedProject.live && selectedProject.live !== '#' && (
+                    <a 
+                      href={selectedProject.live}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center space-x-2 text-xs font-mono rounded-xl px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition shadow cursor-pointer"
+                    >
+                      <ExternalLink size={15} />
+                      <span>Open Live Application</span>
+                    </a>
+                  )}
+                </div>
 
                 <Link 
                   to={`/projects/${selectedProject.id}`}

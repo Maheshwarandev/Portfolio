@@ -262,7 +262,7 @@ export const projectsData = [
     image: "employee-management",
     techStack: ["React.js", "Node.js", "Express.js", "MySQL", "Tailwind CSS", "Postman", "Git"],
     github: "https://github.com/Maheshwarandev/employee-management-system",
-    live: "#",
+    live: "https://ims-frontend-apfa.onrender.com",
     features: [
       "Developed a full-stack employee management application with complete CRUD functionality.",
       "Integrated React.js frontend with RESTful Express.js backend APIs for seamless data flow.",
@@ -322,7 +322,7 @@ CREATE INDEX idx_employee_email ON employees(email);
     image: "complaint-management",
     techStack: ["React.js", "Node.js", "Express.js", "MongoDB", "Mongoose", "Tailwind CSS", "Postman"],
     github: "https://github.com/Maheshwarandev/smart-complaint-resolution-system",
-    live: "#",
+    live: "https://scrs-frontend.onrender.com",
     features: [
       "Built an issue registration form and a dashboard to track progress.",
       "Created RESTful backend APIs in Express to create and fetch complaints.",
