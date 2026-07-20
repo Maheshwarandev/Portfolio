@@ -11,7 +11,8 @@ import {
   Zap,
   Target,
   SearchCode,
-  FileCode2
+  FileCode2,
+  FileDown
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 import { PdfCanvasPreview } from '../components/PdfCanvasPreview';
@@ -216,6 +217,16 @@ Motivated fresher MERN Stack Developer with hands-on experience building full-st
               Cognitive specs, developer philosophy, education background, and interactive terminal documents.
             </p>
           </div>
+
+          {/* PDF Resume Download Button */}
+          <a 
+            href={personalInfo.resume}
+            download="Maheshwaran-S.pdf"
+            className="self-start md:self-auto flex items-center space-x-2 px-4 py-2 border border-[var(--border-color)] bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 rounded-lg text-xs font-mono font-bold hover:bg-zinc-900 dark:hover:bg-zinc-100 transition shadow-sm cursor-pointer"
+          >
+            <FileDown size={14} />
+            <span>Download Resume PDF</span>
+          </a>
         </div>
 
         {/* About Me Grid: Spec Cards & Interactive Terminal Workspace */}

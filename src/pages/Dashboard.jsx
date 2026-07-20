@@ -91,13 +91,14 @@ export function Dashboard() {
 
           {/* Call to Actions (CTAs) */}
           <div className="w-full space-y-2 pt-2">
-            <Link 
-              to="/projects"
+            <a 
+              href={personalInfo.resume}
+              download="Maheshwaran-S.pdf"
               className="w-full flex items-center justify-center space-x-2 py-2.5 rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-black text-xs font-mono font-bold shadow transition cursor-pointer"
             >
-              <Zap size={14} />
-              <span>Explore Projects</span>
-            </Link>
+              <FileDown size={14} />
+              <span>Download Resume</span>
+            </a>
 
             <div className="grid grid-cols-3 gap-2">
               <a 
@@ -292,13 +293,14 @@ export function Dashboard() {
             </div>
 
             <div className="space-y-2 pt-2 border-t border-[var(--border-color)]/60">
-              <Link 
-                to="/projects"
+              <a 
+                href={personalInfo.resume}
+                download="Maheshwaran-S.pdf"
                 className="w-full flex items-center justify-center space-x-2 py-2 rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-black text-xs font-mono font-bold transition cursor-pointer"
               >
-                <Zap size={13} />
-                <span>Explore Projects</span>
-              </Link>
+                <FileDown size={13} />
+                <span>Download Resume</span>
+              </a>
 
               <div className="grid grid-cols-2 gap-2">
                 <a 
@@ -623,16 +625,17 @@ export function Dashboard() {
           </div>
 
           <div className="space-y-2 mt-6">
-            <Link 
-              to="/about"
+            <a 
+              href={personalInfo.resume}
+              download="Maheshwaran-S.pdf"
               className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-900 dark:hover:bg-zinc-100 text-xs font-mono font-bold transition cursor-pointer shadow-sm"
             >
               <span className="flex items-center space-x-2">
                 <FileText size={14} />
-                <span>Explore Operator Specs</span>
+                <span>Download Resume</span>
               </span>
-              <span className="text-[9px] text-white dark:text-zinc-900 bg-zinc-800 dark:bg-zinc-200 px-1.5 py-0.5 rounded font-bold uppercase">SPECS</span>
-            </Link>
+              <span className="text-[9px] text-white dark:text-zinc-900 bg-zinc-800 dark:bg-zinc-200 px-1.5 py-0.5 rounded font-bold uppercase">PDF</span>
+            </a>
             
             <Link 
               to="/contact"

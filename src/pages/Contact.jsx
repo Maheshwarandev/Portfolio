@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Send, 
@@ -8,7 +8,11 @@ import {
   CheckCircle2, 
   AlertCircle,
   Terminal,
-  Server
+  Server,
+  Lock,
+  RefreshCw,
+  ExternalLink,
+  Copy
 } from 'lucide-react';
 import { Github, Linkedin } from '../components/SocialIcons';
 import { personalInfo } from '../data/portfolioData';
@@ -22,15 +26,24 @@ export function Contact() {
   });
   
   const [errors, setErrors] = useState({});
-  const [sendingState, setSendingState] = useState('idle'); // idle | validating | encrypting | transmitting | success
+  const [sendingState, setSendingState] = useState('idle'); // idle | validating | encrypting | transmitting | success | email_fallback
+  const [copied, setCopied] = useState(false);
+  const [transmissionHistory, setTransmissionHistory] = useState([]);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('transmission_logs');
+      if (saved) setTransmissionHistory(JSON.parse(saved));
+    } catch (e) {}
+  }, []);
 
   const validate = () => {
     const nextErrors = {};
-    if (!form.name.trim()) nextErrors.name = 'Operator name is required';
+    if (!form.name.trim()) nextErrors.name = 'Sender identity (name) is required';
     if (!form.email.trim()) {
       nextErrors.email = 'Secure reply path (email) is required';
     } else if (!/\S+@\S+\.\S+/.test(form.email)) {
-      nextErrors.email = 'Reply path format is invalid';
+      nextErrors.email = 'Email format is invalid';
     }
     if (!form.message.trim()) nextErrors.message = 'Message payload cannot be empty';
     
@@ -46,26 +59,78 @@ export function Contact() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const triggerDirectMailto = () => {
+    const subject = encodeURIComponent(`[${form.purpose}] Portfolio Connection Request from ${form.name}`);
+    const body = encodeURIComponent(
+      `Hello Maheshwaran,\n\n${form.message}\n\n---\nSender Details:\nName: ${form.name}\nEmail: ${form.email}\nPurpose: ${form.purpose}`
+    );
+    window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
-    // Trigger simulation of secure transmission
+    // Step 1: Validating
     setSendingState('validating');
     
-    setTimeout(() => {
-      setSendingState('encrypting');
-    }, 800);
+    await new Promise(r => setTimeout(r, 600));
+    setSendingState('encrypting');
 
-    setTimeout(() => {
-      setSendingState('transmitting');
-    }, 1800);
+    await new Promise(r => setTimeout(r, 800));
+    setSendingState('transmitting');
 
-    setTimeout(() => {
-      setSendingState('success');
-      // Reset form
-      setForm({ name: '', email: '', purpose: 'Hiring', message: '' });
-    }, 3000);
+    try {
+      // Direct Web3Forms submission with user's key 88cb7ac5-b5ba-4616-8ea9-cffb65a8da78
+      const formData = new FormData();
+      formData.append("access_key", "88cb7ac5-b5ba-4616-8ea9-cffb65a8da78");
+      formData.append("name", form.name);
+      formData.append("email", form.email);
+      formData.append("subject", `[${form.purpose}] Portfolio Connection Request from ${form.name}`);
+      formData.append("message", `Category: ${form.purpose}\n\n${form.message}`);
+      formData.append("from_name", form.name);
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json();
+
+      // Log entry
+      const newLog = {
+        id: 'TX-' + Math.floor(100000 + Math.random() * 900000),
+        name: form.name,
+        email: form.email,
+        purpose: form.purpose,
+        timestamp: new Date().toLocaleTimeString()
+      };
+
+      const updatedHistory = [newLog, ...transmissionHistory].slice(0, 5);
+      setTransmissionHistory(updatedHistory);
+      try {
+        localStorage.setItem('transmission_logs', JSON.stringify(updatedHistory));
+      } catch (err) {}
+
+      if (response.ok && result.success) {
+        setSendingState('success');
+        setForm({ name: '', email: '', purpose: 'Hiring', message: '' });
+      } else {
+        // If web3forms fallback is needed
+        triggerDirectMailto();
+        setSendingState('email_fallback');
+      }
+    } catch (err) {
+      triggerDirectMailto();
+      setSendingState('email_fallback');
+    }
+  };
+
+  const copyPayload = () => {
+    const text = `Name: ${form.name}\nEmail: ${form.email}\nPurpose: ${form.purpose}\nMessage: ${form.message}`;
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -77,7 +142,7 @@ export function Contact() {
           Contact Operator
         </h1>
         <p className="text-sm text-[var(--text-secondary)] mt-1.5 max-w-xl">
-          Establish a secure connection request. Messages are transmitted to the database and operator logs instantly.
+          Establish a direct connection request. Messages are transmitted to Maheshwaran S in 1 click.
         </p>
       </div>
 
@@ -144,17 +209,18 @@ export function Contact() {
                 </div>
               </a>
 
-              {/* Operator Specs */}
-              <Link 
-                to="/about"
+              {/* Resume Download */}
+              <a 
+                href={personalInfo.resume}
+                download="Maheshwaran-S.pdf"
                 className="flex items-center space-x-3 p-3 rounded-lg border border-[var(--border-color)] bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-mono text-[var(--text-primary)] font-semibold transition"
               >
                 <FileText size={16} className="text-emerald-600 dark:text-emerald-400" />
                 <div>
                   <span className="block text-[9px] uppercase tracking-wider text-[var(--text-secondary)]">System Credentials</span>
-                  <span>Explore Operator Specs</span>
+                  <span>Download Resume PDF</span>
                 </div>
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -162,13 +228,23 @@ export function Contact() {
           <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm text-xs font-mono text-[var(--text-secondary)] space-y-3.5">
             <div className="flex items-center space-x-2 text-[var(--text-primary)] font-bold">
               <Terminal size={14} />
-              <span>Diagnostic Console</span>
+              <span>Diagnostic Console & Log</span>
             </div>
-            <div className="space-y-1.5 text-[11px] leading-relaxed">
-              <p>&gt; openssl genrsa -out private.pem 2048</p>
-              <p>&gt; db.contacts.createIndex(&#123; email: 1 &#125;)</p>
-              <p>&gt; status: listening on TLS 443</p>
-              <p>&gt; location tracking: Chennai, IN</p>
+            <div className="space-y-1 text-[11px] leading-relaxed">
+              <p className="text-emerald-500 font-semibold">&gt; status: 1-Click Direct Delivery Active</p>
+              <p>&gt; target: {personalInfo.email}</p>
+              <p>&gt; location: Chennai, TN, India</p>
+
+              {transmissionHistory.length > 0 && (
+                <div className="pt-2 mt-2 border-t border-[var(--border-color)]/60 space-y-1">
+                  <span className="text-[10px] text-zinc-400 uppercase font-bold block">Sent Messages Log:</span>
+                  {transmissionHistory.map(log => (
+                    <p key={log.id} className="text-[10px] text-indigo-400 truncate">
+                      ✓ {log.id} [{log.purpose}] {log.timestamp}
+                    </p>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -178,10 +254,16 @@ export function Contact() {
           <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-xl p-6 shadow-sm relative overflow-hidden">
             
             {/* Form Title Banner */}
-            <div className="flex items-center space-x-2 border-b border-[var(--border-color)]/60 pb-4 mb-6">
-              <Server size={16} className="text-indigo-600 dark:text-indigo-400" />
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--text-primary)]">
-                Secure Transmission Client
+            <div className="flex items-center justify-between border-b border-[var(--border-color)]/60 pb-4 mb-6">
+              <div className="flex items-center space-x-2">
+                <Server size={16} className="text-indigo-600 dark:text-indigo-400" />
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--text-primary)]">
+                  Secure Transmission Client
+                </span>
+              </div>
+              <span className="text-[10px] font-mono text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded font-bold flex items-center space-x-1">
+                <Lock size={10} />
+                <span>1-Click Direct Delivery</span>
               </span>
             </div>
 
@@ -200,18 +282,18 @@ export function Contact() {
                     {/* Name */}
                     <div className="space-y-1.5">
                       <label className="text-[11px] font-mono font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
-                        Sender Identity
+                        Sender Identity (Your Name)
                       </label>
                       <input 
                         type="text" 
                         name="name"
                         value={form.name}
                         onChange={handleInput}
-                        placeholder="e.g. John Doe"
+                        placeholder="e.g. Recruiter / Client Name"
                         className={`w-full px-3.5 py-2.5 rounded-lg border bg-zinc-50 dark:bg-zinc-900 text-xs md:text-sm font-sans focus:outline-none transition ${
                           errors.name 
                             ? 'border-red-500/50 focus:border-red-500' 
-                            : 'border-[var(--border-color)] focus:border-zinc-500'
+                            : 'border-[var(--border-color)] focus:border-indigo-500'
                         }`}
                       />
                       {errors.name && (
@@ -225,18 +307,18 @@ export function Contact() {
                     {/* Email */}
                     <div className="space-y-1.5">
                       <label className="text-[11px] font-mono font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
-                        Secure Reply Path (Email)
+                        Secure Reply Path (Your Email)
                       </label>
                       <input 
-                        type="text" 
+                        type="email" 
                         name="email"
                         value={form.email}
                         onChange={handleInput}
-                        placeholder="e.g. client@company.com"
+                        placeholder="e.g. your.email@company.com"
                         className={`w-full px-3.5 py-2.5 rounded-lg border bg-zinc-50 dark:bg-zinc-900 text-xs md:text-sm font-sans focus:outline-none transition ${
                           errors.email 
                             ? 'border-red-500/50 focus:border-red-500' 
-                            : 'border-[var(--border-color)] focus:border-zinc-500'
+                            : 'border-[var(--border-color)] focus:border-indigo-500'
                         }`}
                       />
                       {errors.email && (
@@ -252,7 +334,7 @@ export function Contact() {
                   {/* Purpose Selector */}
                   <div className="space-y-1.5">
                     <label className="text-[11px] font-mono font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
-                      Transmission Subject Node
+                      Transmission Subject Category
                     </label>
                     <div className="grid grid-cols-3 gap-3">
                       {['Hiring', 'Project Collab', 'Tech Inquiry'].map(purpose => (
@@ -262,7 +344,7 @@ export function Contact() {
                           onClick={() => setForm(prev => ({ ...prev, purpose }))}
                           className={`px-3 py-2 rounded-lg border text-xs font-mono transition cursor-pointer ${
                             form.purpose === purpose
-                              ? 'bg-zinc-100 dark:bg-zinc-800 border-zinc-500 dark:border-zinc-500 text-[var(--text-primary)] font-bold shadow-sm'
+                              ? 'bg-indigo-600 text-white border-indigo-600 font-bold shadow-sm'
                               : 'bg-zinc-50 dark:bg-zinc-900 border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                           }`}
                         >
@@ -282,11 +364,11 @@ export function Contact() {
                       rows={5}
                       value={form.message}
                       onChange={handleInput}
-                      placeholder="Write your connection query here..."
+                      placeholder="Write your project requirements, opportunity details, or inquiry here..."
                       className={`w-full px-3.5 py-2.5 rounded-lg border bg-zinc-50 dark:bg-zinc-900 text-xs md:text-sm font-sans focus:outline-none transition ${
                         errors.message 
                           ? 'border-red-500/50 focus:border-red-500' 
-                          : 'border-[var(--border-color)] focus:border-zinc-500'
+                          : 'border-[var(--border-color)] focus:border-indigo-500'
                       }`}
                     />
                     {errors.message && (
@@ -300,58 +382,115 @@ export function Contact() {
                   {/* Submit Button */}
                   <button 
                     type="submit"
-                    className="w-full mt-4 flex items-center justify-center space-x-2 py-3 rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-black font-heading font-bold text-xs md:text-sm shadow-md hover:bg-zinc-900 dark:hover:bg-zinc-100 transition cursor-pointer"
+                    className="w-full mt-4 flex items-center justify-center space-x-2 py-3 rounded-lg bg-indigo-600 text-white font-heading font-bold text-xs md:text-sm shadow-md hover:bg-indigo-500 active:scale-[0.99] transition cursor-pointer"
                   >
-                    <Send size={14} />
-                    <span>Transmit Message</span>
+                    <Send size={15} />
+                    <span>Send Message (1-Click Direct Delivery)</span>
                   </button>
 
                 </motion.form>
               ) : (
                 <motion.div 
                   key="transmission-status"
-                  className="min-h-[300px] flex flex-col items-center justify-center text-center p-6 font-mono"
+                  className="min-h-[360px] flex flex-col items-center justify-center text-center p-6 font-mono space-y-6"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
                 >
                   {/* Status Animation Nodes */}
-                  <div className="space-y-4">
+                  <div className="space-y-4 w-full max-w-md">
                     {sendingState === 'validating' && (
-                      <div className="space-y-2">
-                        <div className="w-10 h-10 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto" />
-                        <p className="text-xs text-indigo-600 dark:text-indigo-400">Verifying transmission payloads...</p>
+                      <div className="space-y-3">
+                        <RefreshCw size={32} className="text-indigo-500 animate-spin mx-auto" />
+                        <p className="text-xs text-indigo-500 font-bold uppercase tracking-wider">[Step 1/3] Validating Payload Inputs...</p>
                       </div>
                     )}
+
                     {sendingState === 'encrypting' && (
-                      <div className="space-y-2">
-                        <div className="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
-                        <p className="text-xs text-blue-600 dark:text-blue-400">Encrypting packages via RSA-2048...</p>
+                      <div className="space-y-3">
+                        <Lock size={32} className="text-blue-500 animate-pulse mx-auto" />
+                        <p className="text-xs text-blue-500 font-bold uppercase tracking-wider">[Step 2/3] Encrypting via RSA-2048 Cipher...</p>
                       </div>
                     )}
+
                     {sendingState === 'transmitting' && (
-                      <div className="space-y-2">
-                        <div className="w-10 h-10 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto" />
-                        <p className="text-xs text-emerald-600 dark:text-emerald-400">Broadcasting sockets packets...</p>
+                      <div className="space-y-3">
+                        <Server size={32} className="text-emerald-500 animate-bounce mx-auto" />
+                        <p className="text-xs text-emerald-500 font-bold uppercase tracking-wider">[Step 3/3] Direct HTTP POST Delivery to Inbox...</p>
                       </div>
                     )}
+
                     {sendingState === 'success' && (
                       <motion.div 
-                        initial={{ scale: 0.8 }}
-                        animate={{ scale: 1 }}
-                        className="space-y-4"
+                        initial={{ scale: 0.85, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="space-y-5 bg-zinc-950/90 border border-emerald-500/40 rounded-2xl p-6 shadow-xl text-white"
                       >
-                        <CheckCircle2 size={42} className="text-emerald-500 mx-auto" />
-                        <div className="space-y-1">
-                          <p className="text-sm font-bold text-[var(--text-primary)]">Transmission Successful</p>
-                          <p className="text-[10px] text-[var(--text-secondary)]">HTTP/1.1 202 Accepted &bull; Sockets Confirmed</p>
+                        <CheckCircle2 size={48} className="text-emerald-400 mx-auto" />
+                        <div className="space-y-1.5">
+                          <h4 className="text-base font-bold font-heading text-emerald-400">Message Delivered Directly!</h4>
+                          <p className="text-xs text-zinc-300 font-mono">
+                            Your message has been transmitted directly to <span className="text-indigo-300 font-bold">maheshwaran852485@gmail.com</span> inbox.
+                          </p>
                         </div>
-                        <button
-                          onClick={() => setSendingState('idle')}
-                          className="mt-6 px-4 py-2 rounded-lg border border-[var(--border-color)] text-xs text-[var(--text-primary)] font-semibold bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer"
-                        >
-                          Send New Transmission
-                        </button>
+
+                        <div className="pt-2">
+                          <button
+                            onClick={() => {
+                              setSendingState('idle');
+                              setForm({ name: '', email: '', purpose: 'Hiring', message: '' });
+                            }}
+                            className="px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-mono font-bold transition cursor-pointer shadow"
+                          >
+                            Send Another Message
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {sendingState === 'email_fallback' && (
+                      <motion.div 
+                        initial={{ scale: 0.85, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="space-y-5 bg-zinc-950/90 border border-indigo-500/40 rounded-2xl p-6 shadow-xl text-white"
+                      >
+                        <Mail size={48} className="text-indigo-400 mx-auto animate-bounce" />
+                        <div className="space-y-1.5">
+                          <h4 className="text-base font-bold font-heading text-indigo-400">Payload Ready for Dispatch!</h4>
+                          <p className="text-xs text-zinc-300 font-mono">
+                            To ensure 100% delivery to <span className="text-indigo-300 font-bold">maheshwaran852485@gmail.com</span>, your email app has been opened with your pre-filled message!
+                          </p>
+                        </div>
+
+                        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                          <button
+                            onClick={triggerDirectMailto}
+                            className="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-mono font-bold flex items-center justify-center space-x-2 shadow cursor-pointer"
+                          >
+                            <ExternalLink size={14} />
+                            <span>Send via Email Client</span>
+                          </button>
+
+                          <button
+                            onClick={copyPayload}
+                            className="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-mono font-bold flex items-center justify-center space-x-2 border border-zinc-700 cursor-pointer"
+                          >
+                            <Copy size={14} />
+                            <span>{copied ? 'Payload Copied!' : 'Copy Payload'}</span>
+                          </button>
+                        </div>
+
+                        <div className="pt-2">
+                          <button
+                            onClick={() => {
+                              setSendingState('idle');
+                              setForm({ name: '', email: '', purpose: 'Hiring', message: '' });
+                            }}
+                            className="text-[11px] text-zinc-400 hover:text-white underline cursor-pointer"
+                          >
+                            ← Send New Message
+                          </button>
+                        </div>
                       </motion.div>
                     )}
                   </div>

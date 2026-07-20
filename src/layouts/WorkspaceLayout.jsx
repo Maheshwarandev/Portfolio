@@ -77,8 +77,8 @@ export function WorkspaceLayout({ children }) {
   const mobileNavItems = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/projects', label: 'Projects', icon: Briefcase },
-    { path: '/about', label: 'About', icon: User },
     { path: '/github', label: 'GitHub', icon: Github },
+    { path: personalInfo.resume, label: 'Resume', icon: FileDown, external: true },
     { path: '/contact', label: 'Contact', icon: Mail }
   ];
 
@@ -313,6 +313,17 @@ export function WorkspaceLayout({ children }) {
         </div>
       </footer>
 
+      {/* FLOATING ACTION RESUME BUTTON ON MOBILE */}
+      <div className="md:hidden fixed bottom-20 right-4 z-40">
+        <a 
+          href={personalInfo.resume}
+          download="Maheshwaran-S.pdf"
+          className="flex items-center justify-center h-12 w-12 rounded-full bg-zinc-950 text-white dark:bg-white dark:text-black shadow-lg border border-zinc-800/80 dark:border-zinc-200/80 hover:scale-105 active:scale-95 transition cursor-pointer"
+          title="Download Resume"
+        >
+          <FileDown size={20} />
+        </a>
+      </div>
 
       {/* STICKY BOTTOM NAVIGATION BAR FOR MOBILE */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[var(--bg-surface)]/90 backdrop-blur-md border-t border-[var(--border-color)] z-40 flex items-center justify-around px-2 pb-safe shadow-lg">

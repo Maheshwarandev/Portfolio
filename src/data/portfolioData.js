@@ -8,6 +8,7 @@ export const personalInfo = {
   github: "https://github.com/Maheshwarandev",
   linkedin: "https://www.linkedin.com/in/maheshwarandev",
   phone: "+91 85248 58324",
+  resume: "/Maheshwaran-S.pdf",
   focus: "Building full-stack web applications using MongoDB, Express.js, React.js, and Node.js (MERN Stack).",
   bio: "Motivated Software Developer with hands-on experience building full-stack web applications using MongoDB, Express.js, React.js, and Node.js (MERN Stack). Skilled in developing responsive user interfaces, RESTful APIs, database management, and implementing CRUD operations. Proficient in JavaScript (ES6+), MySQL, Git, GitHub, and modern web development best practices. Passionate about creating scalable, maintainable web applications."
 };
