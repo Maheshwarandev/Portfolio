@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  User, 
-  Lightbulb, 
-  SearchCode, 
   GraduationCap, 
-  Target, 
-  Terminal,
-  FileCode2,
-  FileDown,
-  Award,
-  ChevronRight,
-  ClipboardCheck,
+  Award, 
+  Code2, 
+  Terminal, 
   ExternalLink,
-  ShieldCheck
+  ChevronRight,
+  ShieldCheck,
+  Zap,
+  Target,
+  SearchCode,
+  FileCode2
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 import { PdfCanvasPreview } from '../components/PdfCanvasPreview';
@@ -21,35 +19,28 @@ import { PdfCanvasPreview } from '../components/PdfCanvasPreview';
 export function About() {
   const [activeFile, setActiveFile] = useState('summary.md');
 
-  // Specs Cards data
+  // Spec Cards for About Me Grid
   const specCards = [
     {
-      id: "who",
-      title: "Who I Am",
-      icon: User,
+      id: "architecture",
+      title: "Full-Stack System Focus",
+      icon: Zap,
       color: "text-indigo-600 dark:text-indigo-400 border-indigo-500/10",
-      content: `I am a full stack software developer specializing in React.js, Node.js, Express.js, and MongoDB. I focus on building responsive interfaces, designing clean RESTful APIs, and implementing optimized database layouts. Based in Chennai, India, I treat coding as product craftsmanship.`
-    },
-    {
-      id: "philosophy",
-      title: "Development Philosophy",
-      icon: Lightbulb,
-      color: "text-amber-600 dark:text-amber-400 border-amber-500/10",
-      content: `I believe that code should be written for human readability first and compiler efficiency second. I strictly adhere to modular layouts, reusable components, comprehensive linting, and semantic accessibility. Every element in my applications must have a clear, functional purpose.`
+      content: `I specialize in end-to-end full-stack web applications using the MERN stack (MongoDB, Express.js, React.js, Node.js) and relational databases like MySQL. I design RESTful APIs, modular frontend interfaces, and role-based authentication schemes.`
     },
     {
       id: "problem",
       title: "Problem Solving",
       icon: SearchCode,
       color: "text-emerald-600 dark:text-emerald-400 border-emerald-500/10",
-      content: `When debugging, I trace execution chains systematically instead of making assumptions. I analyze database query indexings, check caching state hits, monitor REST headers, and write automated validations. I aim to write structural, permanent patches, not temporary hotfixes.`
+      content: `When debugging, I trace execution chains systematically. I analyze relational table schemas, monitor REST endpoint headers, design robust MVC controller routes, and test APIs using Postman.`
     },
     {
       id: "goals",
       title: "Engineering Goals",
       icon: Target,
       color: "text-purple-600 dark:text-purple-400 border-purple-500/10",
-      content: `My goal is to design scalable software products that achieve low API latencies under concurrent MERN environments. I want to build robust backend pipelines and modular frontend states that streamline operations for engineering teams.`
+      content: `My goal is to build scalable, maintainable software products that achieve low API latencies. I want to build robust backend pipelines and modular frontend states that streamline real-world operations.`
     },
     {
       id: "education",
@@ -63,20 +54,18 @@ export function About() {
       title: "Core Credentials",
       icon: Award,
       color: "text-rose-600 dark:text-rose-400 border-rose-500/10",
-      content: `SystemTron Python Internship, LinkedIn Learning (What Is Generative AI?), Great Learning (Cyber Security, AI & ChatGPT), Power BI Workshop, UiPath Automation, and IBM Full-Stack JS Developer (In Progress).`
+      content: `Besant Technologies MERN Stack Training, SystemTron Python Internship, Great Learning (Cyber Security, AI & ChatGPT), Power BI Workshop, UiPath Automation, and IBM Full-Stack JS Developer (In Progress).`
     }
   ];
 
-  // Resume Files data for Interactive Terminal
-  const resumeFiles = {
+  // Terminal Files data for Interactive Explorer
+  const terminalFiles = {
     'summary.md': `# MAHESHWARAN S
 ## MERN Stack Developer
 +91 85248 58324 | maheshwaran852485@gmail.com
 Chennai, Tamil Nadu
 
 Motivated fresher MERN Stack Developer with hands-on experience building full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Proficient in JavaScript (ES6+), MySQL, RESTful API development, Git, and GitHub. Passionate about creating scalable, responsive web applications and eager to contribute to a dynamic development team.`,
-
-    'resume.pdf': '/Maheshwaran_S_Resume.pdf',
 
     'experience.json': `[
   {
@@ -109,73 +98,83 @@ Motivated fresher MERN Stack Developer with hands-on experience building full-st
     status: "In Progress"
   - name: "MERN Stack Development Training"
     provider: "Besant Technologies"
+  - name: "Completion of Internship in Python"
+    provider: "System Tron"
+    doc: "/Python_Internship_Certificate.pdf"
+  - name: "Introduction to Cyber Security"
+    provider: "Great Learning Academy"
+    doc: "/Introduction_to_Cyber_Security.pdf"
+  - name: "Introduction to Artificial Intelligence"
+    provider: "Great Learning Academy"
+    doc: "/Introduction_to_Artificial_Intelligence.pdf"
+  - name: "ChatGPT for Beginners"
+    provider: "Great Learning Academy"
+    doc: "/ChatGPT_for_Beginners.pdf"
+  - name: "What Is Generative AI?"
+    provider: "LinkedIn Learning"
+    doc: "/What_is_Generative_AI.pdf"
   - name: "PL-300: Microsoft Power BI"
     provider: "OfficeMaster"
-    doc: "/OfficeMaster_PowerBI_Workshop_Certificate.pdf"
-  - name: "AI Revolution in Cyber Security / Cyber Security"
-    provider: "Great Learning Academy"
-    doc: "/Great_Learning_Introduction_to_Cyber_Security.pdf"
-  - name: "Data Science Foundations"
-    provider: "Great Learning Academy"
-    doc: "/Great_Learning_Introduction_to_Artificial_Intelligence.pdf"
-  - name: "UiPath Automation Implementation Methodology Fundamentals"
+    doc: "/PowerBI_Workshop_Certificate.pdf"
+  - name: "UiPath Automation Fundamentals"
     provider: "UiPath Academy"
-    doc: "/UiPath_Automation_Implementation_Methodology_Fundamentals.pdf"
+    doc: "/UiPath_Automation_Fundamentals.pdf"
 `
   };
 
+  // Clean certificates list with renamed filenames (without personal names)
   const certificatesList = [
-    {
-      name: "What Is Generative AI?",
-      provider: "LinkedIn Learning",
-      date: "2024",
-      document: "/LinkedIn_Learning_What_is_Generative_AI.pdf",
-      image: null
-    },
-    {
-      name: "ChatGPT for Beginners",
-      provider: "Great Learning Academy",
-      date: "2024",
-      verifyUrl: "https://www.mygreatlearning.com/certificate/CXCFHOLI",
-      document: "/Great_Learning_ChatGPT_for_Beginners.pdf",
-      image: "/certificates/Great_Learning_ChatGPT_for_Beginners.jpg"
-    },
     {
       name: "Completion of Internship in Python",
       provider: "System Tron",
       date: "2025",
-      document: "/SystemTron_Python_Internship_Certificate.pdf",
-      image: "/certificates/SystemTron_Python_Internship_Certificate.png"
+      document: "/Python_Internship_Certificate.pdf",
+      image: "/certificates/Python_Internship_Certificate.png"
     },
     {
       name: "Introduction to Cyber Security",
       provider: "Great Learning Academy",
       date: "2024",
       verifyUrl: "https://www.mygreatlearning.com/certificate/XTXCFGZF",
-      document: "/Great_Learning_Introduction_to_Cyber_Security.pdf",
-      image: "/certificates/Great_Learning_Introduction_to_Cyber_Security.jpg"
+      document: "/Introduction_to_Cyber_Security.pdf",
+      image: "/certificates/Introduction_to_Cyber_Security.jpg"
     },
     {
       name: "Introduction to Artificial Intelligence",
       provider: "Great Learning Academy",
       date: "2024",
       verifyUrl: "https://www.mygreatlearning.com/certificate/KNIEHZIB",
-      document: "/Great_Learning_Introduction_to_Artificial_Intelligence.pdf",
-      image: "/certificates/Great_Learning_Introduction_to_Artificial_Intelligence.jpg"
+      document: "/Introduction_to_Artificial_Intelligence.pdf",
+      image: "/certificates/Introduction_to_Artificial_Intelligence.jpg"
+    },
+    {
+      name: "ChatGPT for Beginners",
+      provider: "Great Learning Academy",
+      date: "2024",
+      verifyUrl: "https://www.mygreatlearning.com/certificate/CXCFHOLI",
+      document: "/ChatGPT_for_Beginners.pdf",
+      image: "/certificates/ChatGPT_for_Beginners.jpg"
+    },
+    {
+      name: "What Is Generative AI?",
+      provider: "LinkedIn Learning",
+      date: "2024",
+      document: "/What_is_Generative_AI.pdf",
+      image: null
     },
     {
       name: "PowerBI Workshop",
       provider: "OfficeMaster",
       date: "2025",
-      document: "/OfficeMaster_PowerBI_Workshop_Certificate.pdf",
+      document: "/PowerBI_Workshop_Certificate.pdf",
       image: null
     },
     {
       name: "UiPath Automation Fundamentals",
       provider: "UiPath Academy",
       date: "Oct 21, 2024",
-      document: "/UiPath_Automation_Implementation_Methodology_Fundamentals.pdf",
-      image: "/certificates/UiPath_Automation_Implementation_Methodology_Fundamentals.png"
+      document: "/UiPath_Automation_Fundamentals.pdf",
+      image: "/certificates/UiPath_Automation_Fundamentals.png"
     },
     {
       name: "IBM Full-Stack JavaScript Developer",
@@ -214,19 +213,9 @@ Motivated fresher MERN Stack Developer with hands-on experience building full-st
               About Operator
             </h1>
             <p className="text-sm text-[var(--text-secondary)] mt-1.5 max-w-xl">
-              Cognitive specs, developer philosophy, education background, and interactive resume documents.
+              Cognitive specs, developer philosophy, education background, and interactive terminal documents.
             </p>
           </div>
-          
-          {/* PDF Resume Download Button */}
-          <a 
-            href={personalInfo.resume}
-            download
-            className="self-start md:self-auto flex items-center space-x-2 px-4 py-2 border border-[var(--border-color)] bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 rounded-lg text-xs font-mono font-bold hover:bg-zinc-900 dark:hover:bg-zinc-100 transition shadow-sm cursor-pointer"
-          >
-            <FileDown size={14} />
-            <span>Download Resume PDF</span>
-          </a>
         </div>
 
         {/* About Me Grid: Spec Cards & Interactive Terminal Workspace */}
@@ -257,10 +246,10 @@ Motivated fresher MERN Stack Developer with hands-on experience building full-st
             })}
           </div>
 
-          {/* Right Side: Interactive Resume Terminal (Span 3 cols) */}
+          {/* Right Side: Interactive Specs Terminal (Span 3 cols) */}
           <div className="lg:col-span-3 flex flex-col space-y-4">
             
-            <div className="bg-[#0c0c0e] border border-zinc-800 rounded-xl overflow-hidden shadow-xl flex flex-col flex-1 min-h-[500px]">
+            <div className="bg-[#0c0c0e] border border-zinc-800 rounded-xl overflow-hidden shadow-xl flex flex-col flex-1 min-h-[480px]">
               
               {/* Terminal Top Bar */}
               <div className="bg-[#16161a] px-4 py-3 flex items-center justify-between border-b border-zinc-800">
@@ -268,7 +257,7 @@ Motivated fresher MERN Stack Developer with hands-on experience building full-st
                   <span className="w-3 h-3 rounded-full bg-rose-500/90 inline-block" />
                   <span className="w-3 h-3 rounded-full bg-amber-500/90 inline-block" />
                   <span className="w-3 h-3 rounded-full bg-emerald-500/90 inline-block" />
-                  <span className="text-[10px] text-zinc-500 font-mono pl-2">operator_resume.sh - active</span>
+                  <span className="text-[10px] text-zinc-500 font-mono pl-2">operator_specs.sh - active</span>
                 </div>
                 <div className="flex items-center space-x-1 text-[10px] font-mono text-zinc-600">
                   <Terminal size={11} />
@@ -284,7 +273,7 @@ Motivated fresher MERN Stack Developer with hands-on experience building full-st
                   <div className="hidden md:block px-2 py-1.5 text-[9px] font-mono font-bold uppercase tracking-wider text-zinc-500">
                     Workspace Files
                   </div>
-                  {Object.keys(resumeFiles).map(fileName => {
+                  {Object.keys(terminalFiles).map(fileName => {
                     const isActive = activeFile === fileName;
                     return (
                       <button
@@ -311,15 +300,6 @@ Motivated fresher MERN Stack Developer with hands-on experience building full-st
                   </div>
 
                   <div className="leading-relaxed whitespace-pre-wrap select-text text-zinc-300 pr-12">
-                    {activeFile === 'resume.pdf' && (
-                      <div className="w-full h-[400px] bg-zinc-950 rounded-xl overflow-hidden border border-zinc-800 my-2">
-                        <PdfCanvasPreview 
-                          pdfUrl="/Maheshwaran_S_Resume.pdf"
-                          title="MAHESHWARAN S - Official Resume PDF"
-                        />
-                      </div>
-                    )}
-
                     {activeFile === 'summary.md' && (
                       <div className="space-y-2">
                         <div>
@@ -332,17 +312,17 @@ Motivated fresher MERN Stack Developer with hands-on experience building full-st
                           <p>Location: <span className="text-zinc-200">Chennai, Tamil Nadu</span> &bull; <a href="https://github.com/Maheshwarandev" target="_blank" rel="noreferrer" className="text-indigo-400 hover:underline">github.com/Maheshwarandev</a></p>
                         </div>
                         <div className="pt-2 border-t border-zinc-800 text-zinc-300 text-xs leading-relaxed">
-                          {resumeFiles['summary.md'].split('\n\n')[1]}
+                          {terminalFiles['summary.md'].split('\n\n')[1]}
                         </div>
                       </div>
                     )}
 
                     {activeFile === 'experience.json' && (
-                      <span className="text-emerald-400">{resumeFiles['experience.json']}</span>
+                      <span className="text-emerald-400">{terminalFiles['experience.json']}</span>
                     )}
 
                     {activeFile === 'education.json' && (
-                      <span className="text-sky-400">{resumeFiles['education.json']}</span>
+                      <span className="text-sky-400">{terminalFiles['education.json']}</span>
                     )}
 
                     {activeFile === 'certifications.yaml' && (
@@ -351,77 +331,63 @@ Motivated fresher MERN Stack Developer with hands-on experience building full-st
                         <span className="text-amber-500">certificates:</span>
                         <div className="pl-4 mt-2 space-y-3">
                           <div>
-                            <span className="text-zinc-500">- name: </span><span className="text-zinc-200">"What Is Generative AI?"</span><br />
-                            <span className="text-zinc-500">  provider: </span><span className="text-zinc-300">"LinkedIn Learning"</span><br />
-                            <span className="text-zinc-500">  date: </span><span className="text-zinc-400">"Sep 23, 2024"</span><br />
-                            <span className="text-zinc-500">  doc: </span><a href="/LinkedIn_Learning_What_is_Generative_AI.pdf" target="_blank" className="text-indigo-400 hover:underline">"/LinkedIn_Learning_What_is_Generative_AI.pdf"</a>
-                          </div>
-
-                          <div>
-                            <span className="text-zinc-500">- name: </span><span className="text-zinc-200">"ChatGPT for Beginners"</span><br />
-                            <span className="text-zinc-500">  provider: </span><span className="text-zinc-300">"Great Learning Academy"</span><br />
-                            <span className="text-zinc-500">  date: </span><span className="text-zinc-400">"September 2024"</span><br />
-                            <span className="text-zinc-500">  verify: </span><a href="https://www.mygreatlearning.com/certificate/CXCFHOLI" target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">"https://www.mygreatlearning.com/certificate/CXCFHOLI"</a><br />
-                            <span className="text-zinc-500">  doc: </span><a href="/Great_Learning_ChatGPT_for_Beginners.pdf" target="_blank" className="text-indigo-400 hover:underline">"/Great_Learning_ChatGPT_for_Beginners.pdf"</a>
-                          </div>
-
-                          <div>
                             <span className="text-zinc-500">- name: </span><span className="text-zinc-200">"Completion of Internship in Python"</span><br />
                             <span className="text-zinc-500">  provider: </span><span className="text-zinc-300">"System Tron"</span><br />
-                            <span className="text-zinc-500">  date: </span><span className="text-zinc-400">"July - August 2025"</span><br />
-                            <span className="text-zinc-500">  doc: </span><a href="/SystemTron_Python_Internship_Certificate.pdf" target="_blank" className="text-indigo-400 hover:underline">"/SystemTron_Python_Internship_Certificate.pdf"</a>
+                            <span className="text-zinc-500">  doc: </span><a href="/Python_Internship_Certificate.pdf" target="_blank" className="text-indigo-400 hover:underline">"/Python_Internship_Certificate.pdf"</a>
                           </div>
 
                           <div>
                             <span className="text-zinc-500">- name: </span><span className="text-zinc-200">"Introduction to Cyber Security"</span><br />
                             <span className="text-zinc-500">  provider: </span><span className="text-zinc-300">"Great Learning Academy"</span><br />
-                            <span className="text-zinc-500">  date: </span><span className="text-zinc-400">"October 2024"</span><br />
                             <span className="text-zinc-500">  verify: </span><a href="https://www.mygreatlearning.com/certificate/XTXCFGZF" target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">"https://www.mygreatlearning.com/certificate/XTXCFGZF"</a><br />
-                            <span className="text-zinc-500">  doc: </span><a href="/Great_Learning_Introduction_to_Cyber_Security.pdf" target="_blank" className="text-indigo-400 hover:underline">"/Great_Learning_Introduction_to_Cyber_Security.pdf"</a>
+                            <span className="text-zinc-500">  doc: </span><a href="/Introduction_to_Cyber_Security.pdf" target="_blank" className="text-indigo-400 hover:underline">"/Introduction_to_Cyber_Security.pdf"</a>
                           </div>
 
                           <div>
                             <span className="text-zinc-500">- name: </span><span className="text-zinc-200">"Introduction to Artificial Intelligence"</span><br />
                             <span className="text-zinc-500">  provider: </span><span className="text-zinc-300">"Great Learning Academy"</span><br />
-                            <span className="text-zinc-500">  date: </span><span className="text-zinc-400">"September 2024"</span><br />
                             <span className="text-zinc-500">  verify: </span><a href="https://www.mygreatlearning.com/certificate/KNIEHZIB" target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">"https://www.mygreatlearning.com/certificate/KNIEHZIB"</a><br />
-                            <span className="text-zinc-500">  doc: </span><a href="/Great_Learning_Introduction_to_Artificial_Intelligence.pdf" target="_blank" className="text-indigo-400 hover:underline">"/Great_Learning_Introduction_to_Artificial_Intelligence.pdf"</a>
+                            <span className="text-zinc-500">  doc: </span><a href="/Introduction_to_Artificial_Intelligence.pdf" target="_blank" className="text-indigo-400 hover:underline">"/Introduction_to_Artificial_Intelligence.pdf"</a>
+                          </div>
+
+                          <div>
+                            <span className="text-zinc-500">- name: </span><span className="text-zinc-200">"ChatGPT for Beginners"</span><br />
+                            <span className="text-zinc-500">  provider: </span><span className="text-zinc-300">"Great Learning Academy"</span><br />
+                            <span className="text-zinc-500">  verify: </span><a href="https://www.mygreatlearning.com/certificate/CXCFHOLI" target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">"https://www.mygreatlearning.com/certificate/CXCFHOLI"</a><br />
+                            <span className="text-zinc-500">  doc: </span><a href="/ChatGPT_for_Beginners.pdf" target="_blank" className="text-indigo-400 hover:underline">"/ChatGPT_for_Beginners.pdf"</a>
+                          </div>
+
+                          <div>
+                            <span className="text-zinc-500">- name: </span><span className="text-zinc-200">"What Is Generative AI?"</span><br />
+                            <span className="text-zinc-500">  provider: </span><span className="text-zinc-300">"LinkedIn Learning"</span><br />
+                            <span className="text-zinc-500">  doc: </span><a href="/What_is_Generative_AI.pdf" target="_blank" className="text-indigo-400 hover:underline">"/What_is_Generative_AI.pdf"</a>
                           </div>
 
                           <div>
                             <span className="text-zinc-500">- name: </span><span className="text-zinc-200">"PowerBI Workshop"</span><br />
                             <span className="text-zinc-500">  provider: </span><span className="text-zinc-300">"OfficeMaster"</span><br />
-                            <span className="text-zinc-500">  date: </span><span className="text-zinc-400">"May 4th, 2025"</span><br />
-                            <span className="text-zinc-500">  doc: </span><a href="/OfficeMaster_PowerBI_Workshop_Certificate.pdf" target="_blank" className="text-indigo-400 hover:underline">"/OfficeMaster_PowerBI_Workshop_Certificate.pdf"</a>
+                            <span className="text-zinc-500">  doc: </span><a href="/PowerBI_Workshop_Certificate.pdf" target="_blank" className="text-indigo-400 hover:underline">"/PowerBI_Workshop_Certificate.pdf"</a>
                           </div>
 
                           <div>
                             <span className="text-zinc-500">- name: </span><span className="text-zinc-200">"UiPath Automation Fundamentals"</span><br />
                             <span className="text-zinc-500">  provider: </span><span className="text-zinc-300">"UiPath Academy"</span><br />
-                            <span className="text-zinc-500">  date: </span><span className="text-zinc-400">"Oct 21, 2024"</span><br />
-                            <span className="text-zinc-500">  doc: </span><a href="/UiPath_Automation_Implementation_Methodology_Fundamentals.pdf" target="_blank" className="text-indigo-400 hover:underline">"/UiPath_Automation_Implementation_Methodology_Fundamentals.pdf"</a>
-                          </div>
-
-                          <div>
-                            <span className="text-zinc-500">- name: </span><span className="text-zinc-200">"IBM Full-Stack JavaScript Developer Professional Certificate"</span><br />
-                            <span className="text-zinc-500">  status: </span><span className="text-amber-400">"In Progress"</span>
-                          </div>
-
-                          <div>
-                            <span className="text-zinc-500">- name: </span><span className="text-zinc-200">"MERN Stack Development Training"</span><br />
-                            <span className="text-zinc-500">  provider: </span><span className="text-zinc-300">"Besant Technologies"</span>
+                            <span className="text-zinc-500">  doc: </span><a href="/UiPath_Automation_Fundamentals.pdf" target="_blank" className="text-indigo-400 hover:underline">"/UiPath_Automation_Fundamentals.pdf"</a>
                           </div>
                         </div>
                       </div>
                     )}
                   </div>
 
-                  <div className="mt-8 pt-4 border-t border-zinc-800/60 flex items-center justify-between text-[10px] text-zinc-500">
-                    <span className="flex items-center space-x-1.5">
-                      <ClipboardCheck size={12} className="text-emerald-500" />
-                      <span>Verified Audit Data</span>
-                    </span>
-                    <span>Lines: {resumeFiles[activeFile].split('\n').length}</span>
+                  {/* Footer status bar inside console */}
+                  <div className="pt-3 border-t border-zinc-800/80 flex items-center justify-between text-[10px] text-zinc-500">
+                    <div className="flex items-center space-x-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                      <span>UTF-8</span>
+                      <span>•</span>
+                      <span>Lines: {terminalFiles[activeFile] ? terminalFiles[activeFile].split('\n').length : 1}</span>
+                    </div>
+                    <span>READ-ONLY NODE</span>
                   </div>
 
                 </div>
@@ -458,50 +424,6 @@ Motivated fresher MERN Stack Developer with hands-on experience building full-st
           <p className="text-xs text-[var(--text-secondary)]">
             Certifications, workshops, and verified credentials earned along the way
           </p>
-        </div>
-
-        {/* FEATURED OFFICIAL RESUME PREVIEW CARD */}
-        <div className="bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-transparent border border-indigo-500/30 rounded-2xl p-6 shadow-sm space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)]/60 pb-4">
-            <div>
-              <span className="text-[10px] font-mono font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-                ★ FEATURED DOCUMENT
-              </span>
-              <h3 className="font-heading text-xl font-extrabold text-[var(--text-primary)]">
-                Official Curriculum Vitae / Resume PDF
-              </h3>
-              <p className="text-xs text-[var(--text-secondary)] font-mono mt-0.5">
-                MAHESHWARAN S — MERN Stack Developer (Chennai, TN)
-              </p>
-            </div>
-
-            <div className="flex items-center space-x-2 shrink-0">
-              <a 
-                href="/Maheshwaran_S_Resume.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="px-3.5 py-1.5 rounded-lg border border-[var(--border-color)] bg-zinc-50 dark:bg-zinc-900 text-[var(--text-primary)] text-xs font-mono font-bold flex items-center space-x-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer"
-              >
-                <ExternalLink size={13} />
-                <span>Full Screen</span>
-              </a>
-              <a 
-                href="/Maheshwaran_S_Resume.pdf"
-                download="Maheshwaran_S_Resume.pdf"
-                className="px-3.5 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-mono font-bold flex items-center space-x-1.5 hover:bg-indigo-500 transition shadow-sm cursor-pointer"
-              >
-                <Download size={13} />
-                <span>Download PDF</span>
-              </a>
-            </div>
-          </div>
-
-          <div className="w-full aspect-[1.41/1] max-h-[500px] bg-zinc-950 rounded-xl overflow-hidden border border-zinc-800 relative shadow-inner">
-            <PdfCanvasPreview 
-              pdfUrl="/Maheshwaran_S_Resume.pdf"
-              title="MAHESHWARAN S - Official Resume"
-            />
-          </div>
         </div>
 
         {/* Grid of Certificate Cards */}

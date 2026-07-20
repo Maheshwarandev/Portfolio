@@ -144,17 +144,17 @@ export function Contact() {
                 </div>
               </a>
 
-              {/* Resume */}
-              <a 
-                href={personalInfo.resume}
+              {/* Operator Specs */}
+              <Link 
+                to="/about"
                 className="flex items-center space-x-3 p-3 rounded-lg border border-[var(--border-color)] bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-mono text-[var(--text-primary)] font-semibold transition"
               >
                 <FileText size={16} className="text-emerald-600 dark:text-emerald-400" />
                 <div>
                   <span className="block text-[9px] uppercase tracking-wider text-[var(--text-secondary)]">System Credentials</span>
-                  <span>Download Resume PDF</span>
+                  <span>Explore Operator Specs</span>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
 
