@@ -120,7 +120,7 @@ export function Dashboard() {
                 <span>LinkedIn</span>
               </a>
               <Link 
-                to="/contact"
+                to="/#contact"
                 className="flex items-center justify-center space-x-1 py-2 rounded-lg border border-[var(--border-color)] bg-zinc-50 dark:bg-zinc-900 text-[10px] font-mono text-[var(--text-primary)] font-semibold transition cursor-pointer"
               >
                 <Mail size={12} />
@@ -153,7 +153,7 @@ export function Dashboard() {
             <h3 className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--text-secondary)]">
               Featured Workspaces
             </h3>
-            <Link to="/projects" className="text-[10px] font-mono text-indigo-500 hover:underline">
+            <Link to="/#projects" className="text-[10px] font-mono text-indigo-500 hover:underline">
               View all &rarr;
             </Link>
           </div>
@@ -218,7 +218,7 @@ export function Dashboard() {
           </div>
 
           <Link 
-            to="/github"
+            to="/#github"
             className="w-full flex items-center justify-center space-x-1 py-1.5 border border-[var(--border-color)] bg-zinc-50 dark:bg-zinc-900 rounded-lg text-[10px] font-mono text-[var(--text-primary)] transition cursor-pointer"
           >
             <span>View GitHub Activity</span>
@@ -396,7 +396,7 @@ export function Dashboard() {
               </p>
             </div>
             <Link 
-              to="/github"
+              to="/#github"
               className="text-[10px] font-mono border border-[var(--border-color)] px-3 py-1.5 rounded-lg bg-zinc-50 dark:bg-zinc-900 text-[var(--text-primary)] cursor-pointer"
             >
               Explore &rarr;
@@ -412,7 +412,7 @@ export function Dashboard() {
               <p className="text-[10px] text-[var(--text-secondary)] font-mono">{personalInfo.email}</p>
             </div>
             <Link 
-              to="/contact"
+              to="/#contact"
               className="text-[10px] font-mono border border-[var(--border-color)] px-3 py-1.5 rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-black cursor-pointer"
             >
               Contact Operator
@@ -545,7 +545,7 @@ export function Dashboard() {
                 FEATURED WORKSPACE / PRODUCTS
               </span>
               <Link 
-                to="/projects" 
+                to="/#projects" 
                 className="text-xs font-mono text-indigo-600 dark:text-indigo-400 font-semibold hover:underline flex items-center space-x-1 cursor-pointer"
               >
                 <span>View All 4 Projects &rarr;</span>
@@ -638,7 +638,7 @@ export function Dashboard() {
             </a>
             
             <Link 
-              to="/contact"
+              to="/#contact"
               className="w-full flex items-center justify-between px-3 py-2 rounded-lg border border-[var(--border-color)] bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-mono text-[var(--text-primary)] font-semibold transition cursor-pointer"
             >
               <span className="flex items-center space-x-2">
@@ -670,7 +670,7 @@ export function Dashboard() {
               <Laptop size={16} className="text-zinc-600 dark:text-zinc-400" />
               <span className="text-xs font-mono font-semibold uppercase tracking-wider">Live Activity Feed</span>
             </div>
-            <Link to="/github" className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-mono transition flex items-center space-x-1">
+            <Link to="/#github" className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-mono transition flex items-center space-x-1">
               <span>View full log</span>
               <span>&rarr;</span>
             </Link>
