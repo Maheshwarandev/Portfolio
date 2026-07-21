@@ -29,7 +29,7 @@ export function PdfCanvasPreview({ pdfUrl, previewImage, title }) {
         if (!isMounted || !canvasRef.current) return;
 
         const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
+        const context = canvas.getContext('2d', { willReadFrequently: true });
 
         // Scale page to fit high DPI
         const unscaledViewport = page.getViewport({ scale: 1.0 });
