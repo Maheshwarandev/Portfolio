@@ -82,17 +82,20 @@ export function Contact() {
 
     try {
       // Direct Web3Forms submission with user's key 88cb7ac5-b5ba-4616-8ea9-cffb65a8da78
-      const formData = new FormData();
-      formData.append("access_key", "88cb7ac5-b5ba-4616-8ea9-cffb65a8da78");
-      formData.append("name", form.name);
-      formData.append("email", form.email);
-      formData.append("subject", `[${form.purpose}] Portfolio Connection Request from ${form.name}`);
-      formData.append("message", `Category: ${form.purpose}\n\n${form.message}`);
-      formData.append("from_name", form.name);
-
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        body: formData
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          access_key: "88cb7ac5-b5ba-4616-8ea9-cffb65a8da78",
+          name: form.name,
+          email: form.email,
+          subject: `[${form.purpose}] Portfolio Connection Request from ${form.name}`,
+          message: `Category: ${form.purpose}\n\n${form.message}`,
+          from_name: form.name
+        })
       });
 
       const result = await response.json();
