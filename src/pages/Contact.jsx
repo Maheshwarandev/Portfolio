@@ -267,7 +267,7 @@ export function Contact() {
               </span>
             </div>
 
-            <AnimatePresence mode="wait">
+            <AnimatePresence>
               {sendingState === 'idle' ? (
                 <motion.form 
                   key="contact-form"

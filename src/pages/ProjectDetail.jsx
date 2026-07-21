@@ -28,11 +28,11 @@ export function ProjectDetail() {
       {/* Back Button */}
       <div className="flex items-center justify-between border-b border-[var(--border-color)]/60 pb-6">
         <Link 
-          to="/projects"
+          to="/#projects"
           className="inline-flex items-center space-x-2 text-xs font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition cursor-pointer"
         >
           <ArrowLeft size={14} />
-          <span>Back to products directory</span>
+          <span>Back to Portfolio Projects</span>
         </Link>
 
         {/* Links */}

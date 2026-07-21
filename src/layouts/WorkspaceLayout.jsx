@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LayoutGrid, 
@@ -24,9 +24,11 @@ import { personalInfo } from '../data/portfolioData';
 export function WorkspaceLayout({ children }) {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
+  const navigate = useNavigate();
   const [time, setTime] = useState(new Date().toLocaleTimeString());
   const [latency, setLatency] = useState(14);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('dashboard');
 
   // Update clock every second
   useEffect(() => {
@@ -63,24 +65,65 @@ export function WorkspaceLayout({ children }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Track scroll position to update active section in real-time
+  useEffect(() => {
+    if (location.pathname !== '/') return;
+
+    const sections = ['dashboard', 'projects', 'about', 'tech-stack', 'journey', 'github', 'contact'];
+    
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 200;
+      for (const sectionId of sections) {
+        const el = document.getElementById(sectionId);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [location.pathname]);
+
   const navItems = [
-    { path: '/', label: 'Dashboard', icon: LayoutGrid },
-    { path: '/about', label: 'About Operator', icon: User },
-    { path: '/projects', label: 'Projects', icon: Briefcase },
-    { path: '/tech-stack', label: 'Tech Stack', icon: Cpu },
-    { path: '/journey', label: 'Journey', icon: Milestone },
-    { path: '/github', label: 'GitHub Activity', icon: Github },
-    { path: '/contact', label: 'Contact', icon: Mail }
+    { section: 'dashboard', path: '/#dashboard', label: 'Dashboard', icon: LayoutGrid },
+    { section: 'projects', path: '/#projects', label: 'Projects', icon: Briefcase },
+    { section: 'about', path: '/#about', label: 'About & Certificates', icon: User },
+    { section: 'tech-stack', path: '/#tech-stack', label: 'Tech Stack', icon: Cpu },
+    { section: 'journey', path: '/#journey', label: 'Journey', icon: Milestone },
+    { section: 'github', path: '/#github', label: 'GitHub Activity', icon: Github },
+    { section: 'contact', path: '/#contact', label: 'Contact', icon: Mail }
   ];
 
   // Mobile Bottom Navigation Bar Items
   const mobileNavItems = [
-    { path: '/', label: 'Home', icon: Home },
-    { path: '/projects', label: 'Projects', icon: Briefcase },
-    { path: '/github', label: 'GitHub', icon: Github },
+    { section: 'dashboard', path: '/#dashboard', label: 'Home', icon: Home },
+    { section: 'projects', path: '/#projects', label: 'Projects', icon: Briefcase },
+    { section: 'github', path: '/#github', label: 'GitHub', icon: Github },
     { path: personalInfo.resume, label: 'Resume', icon: FileDown, external: true },
-    { path: '/contact', label: 'Contact', icon: Mail }
+    { section: 'contact', path: '/#contact', label: 'Contact', icon: Mail }
   ];
+
+  const handleNavClick = (e, item) => {
+    if (item.external) return;
+
+    e.preventDefault();
+    if (location.pathname === '/') {
+      const element = document.getElementById(item.section);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        setActiveSection(item.section);
+      }
+    } else {
+      navigate('/#' + item.section);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[var(--bg-app)] text-[var(--text-primary)] relative flex flex-col overflow-x-hidden selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors duration-300 pb-16 md:pb-0">
@@ -115,11 +158,11 @@ export function WorkspaceLayout({ children }) {
         </div>
       </div>
 
-      {/* DESKTOP STICKY DOUBLE HEADER */}
+      {/* DESKTOP STICKY DOUBLE HEADER (FULL EDGE-TO-EDGE) */}
       <header className="hidden md:block sticky top-0 z-30 w-full backdrop-blur-md bg-[var(--bg-app)]/85 border-b border-[var(--border-color)]">
         
         {/* BAR 1: Status & branding info */}
-        <div className="w-full px-4 md:px-8 lg:px-16 h-12 flex items-center justify-between text-xs text-[var(--text-secondary)] border-b border-[var(--border-color)]/60">
+        <div className="w-full px-4 md:px-6 lg:px-8 h-12 flex items-center justify-between text-xs text-[var(--text-secondary)] border-b border-[var(--border-color)]/60">
           
           {/* Left alignment group */}
           <div className="flex items-center space-x-6">
@@ -137,7 +180,7 @@ export function WorkspaceLayout({ children }) {
             {/* Search trigger resembling Cmd+K */}
             <button 
               onClick={() => setCommandPaletteOpen(true)}
-              className="hidden md:flex items-center justify-between w-60 px-3 py-1.5 rounded-lg border border-[var(--border-color)] hover:border-zinc-400 dark:hover:border-zinc-500 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 transition cursor-pointer shadow-sm"
+              className="hidden md:flex items-center justify-between w-64 px-3.5 py-1.5 rounded-lg border border-[var(--border-color)] hover:border-zinc-400 dark:hover:border-zinc-500 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 transition cursor-pointer shadow-sm"
             >
               <div className="flex items-center space-x-2">
                 <Search size={13} className="text-[var(--text-secondary)]" />
@@ -182,17 +225,18 @@ export function WorkspaceLayout({ children }) {
         </div>
 
         {/* BAR 2: App tabs navigation */}
-        <div className="w-full px-4 md:px-8 lg:px-16 h-14 flex items-center justify-between">
+        <div className="w-full px-4 md:px-6 lg:px-8 h-14 flex items-center justify-between">
           <nav className="flex space-x-1 md:space-x-2 overflow-x-auto no-scrollbar w-full py-1">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = location.pathname === item.path;
+              const isActive = location.pathname === '/' && activeSection === item.section;
               
               return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`relative flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition-colors duration-200 cursor-pointer ${
+                <a
+                  key={item.section}
+                  href={item.path}
+                  onClick={(e) => handleNavClick(e, item)}
+                  className={`relative flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition-colors duration-200 cursor-pointer ${
                     isActive 
                       ? 'text-[var(--text-primary)] font-semibold' 
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -209,7 +253,7 @@ export function WorkspaceLayout({ children }) {
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
-                </Link>
+                </a>
               );
             })}
           </nav>
@@ -219,96 +263,71 @@ export function WorkspaceLayout({ children }) {
       {/* COMMAND PALETTE DIALOG MOCK */}
       <AnimatePresence>
         {commandPaletteOpen && (
-          <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 px-4">
-            {/* Overlay */}
+          <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4">
             <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
               onClick={() => setCommandPaletteOpen(false)}
-              className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm"
             />
-
-            {/* Modal Dialog */}
+            
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: -10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -10 }}
-              transition={{ duration: 0.15 }}
-              className="w-full max-w-lg bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-xl shadow-2xl overflow-hidden z-10"
+              initial={{ opacity: 0, scale: 0.95, y: -10 }} 
+              animate={{ opacity: 1, scale: 1, y: 0 }} 
+              exit={{ opacity: 0, scale: 0.95, y: -10 }} 
+              className="relative w-full max-w-lg bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl shadow-2xl overflow-hidden z-10 font-sans"
             >
-              <div className="flex items-center space-x-2 px-4 py-3 border-b border-[var(--border-color)]">
-                <Search size={16} className="text-[var(--text-secondary)]" />
+              <div className="flex items-center px-4 border-b border-[var(--border-color)]">
+                <Search size={16} className="text-[var(--text-secondary)] mr-3" />
                 <input 
                   type="text" 
-                  placeholder="Type a page name, project, or tech stack..." 
-                  className="w-full bg-transparent border-0 text-sm focus:outline-none focus:ring-0 placeholder:text-[var(--text-secondary)]"
+                  placeholder="Type a command or search workspace..." 
+                  className="w-full py-3.5 bg-transparent text-sm text-[var(--text-primary)] focus:outline-none placeholder:text-[var(--text-secondary)]"
                   autoFocus
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      const val = e.target.value.toLowerCase().trim();
-                      if (val === 'dashboard' || val === 'home') window.location.href = '/';
-                      else if (val === 'about') window.location.href = '/about';
-                      else if (val === 'projects') window.location.href = '/projects';
-                      else if (val === 'tech stack' || val === 'skills') window.location.href = '/tech-stack';
-                      else if (val === 'journey' || val === 'timeline') window.location.href = '/journey';
-                      else if (val === 'github') window.location.href = '/github';
-                      else if (val === 'contact') window.location.href = '/contact';
-                      setCommandPaletteOpen(false);
-                    }
-                  }}
                 />
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 border font-mono">ESC</span>
               </div>
-              <div className="p-2 text-xs text-[var(--text-secondary)]">
-                <div className="px-3 py-1 font-mono uppercase text-[9px] tracking-wider font-semibold">Quick Pages</div>
-                <div className="grid grid-cols-2 gap-1 p-1">
-                  {navItems.map(item => (
-                    <Link
-                      key={item.path}
-                      to={item.path}
-                      onClick={() => setCommandPaletteOpen(false)}
-                      className="flex items-center space-x-2 p-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 text-[var(--text-primary)]"
-                    >
-                      <item.icon size={14} className="opacity-80" />
-                      <span>{item.label}</span>
-                    </Link>
-                  ))}
+
+              <div className="p-2 max-h-72 overflow-y-auto space-y-1 font-mono text-xs text-[var(--text-secondary)]">
+                <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[var(--text-secondary)] opacity-70">
+                  Navigation Sections
                 </div>
+                {navItems.map(item => (
+                  <a 
+                    key={item.section}
+                    href={item.path} 
+                    onClick={(e) => { setCommandPaletteOpen(false); handleNavClick(e, item); }}
+                    className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-[var(--text-primary)] transition cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <item.icon size={14} />
+                      <span>{item.label}</span>
+                    </div>
+                    <span className="text-[10px] text-zinc-400">Scroll to #{item.section}</span>
+                  </a>
+                ))}
               </div>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
 
-      {/* MAIN CONTAINER */}
-      <main className="flex-1 w-full max-w-full px-4 md:px-8 lg:px-16 py-8 z-10">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="w-full"
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
+      {/* MAIN CONTENT AREA - 100% FULL WIDTH EDGE-TO-EDGE */}
+      <main className="flex-1 w-full px-4 md:px-6 lg:px-8 py-6 md:py-10 z-10">
+        {children}
       </main>
 
-      {/* FOOTER - Hidden on Mobile */}
-      <footer className="hidden md:block w-full border-t border-[var(--border-color)]/60 bg-[var(--bg-app)]/50 py-6 text-xs text-[var(--text-secondary)] font-mono">
-        <div className="w-full px-4 md:px-8 lg:px-16 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div>
-            &copy; {new Date().getFullYear()} {personalInfo.name}. All rights reserved.
+      {/* FOOTER - 100% FULL WIDTH EDGE-TO-EDGE */}
+      <footer className="w-full border-t border-[var(--border-color)] bg-[var(--bg-surface)]/50 py-8 text-xs font-mono text-[var(--text-secondary)]">
+        <div className="w-full px-4 md:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center space-x-2">
+            <span>&copy; {new Date().getFullYear()} MAHESHWARAN S. All rights reserved.</span>
           </div>
-          <div className="flex items-center space-x-4">
+
+          <div className="flex items-center space-x-6">
             <a href={personalInfo.github} target="_blank" rel="noreferrer" className="hover:text-[var(--text-primary)] transition">GitHub</a>
-            <span>&bull;</span>
             <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="hover:text-[var(--text-primary)] transition">LinkedIn</a>
-            <span>&bull;</span>
-            <span>Handcrafted in India</span>
+            <span className="text-emerald-500 font-semibold">&bull; Handcrafted in India</span>
           </div>
         </div>
       </footer>
@@ -325,44 +344,43 @@ export function WorkspaceLayout({ children }) {
         </a>
       </div>
 
-      {/* STICKY BOTTOM NAVIGATION BAR FOR MOBILE */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[var(--bg-surface)]/90 backdrop-blur-md border-t border-[var(--border-color)] z-40 flex items-center justify-around px-2 pb-safe shadow-lg">
+      {/* MOBILE BOTTOM NAVIGATION BAR */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[var(--bg-app)]/90 backdrop-blur-lg border-t border-[var(--border-color)] h-16 flex items-center justify-around px-2">
         {mobileNavItems.map((item) => {
           const Icon = item.icon;
-          const isActive = location.pathname === item.path;
-          
+          const isActive = location.pathname === '/' && activeSection === item.section;
+
           if (item.external) {
             return (
               <a
                 key={item.label}
                 href={item.path}
-                target="_blank"
-                rel="noreferrer"
-                className="flex flex-col items-center justify-center space-y-1 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition w-16 h-full"
+                download="Maheshwaran-S.pdf"
+                className="flex flex-col items-center justify-center space-y-1 text-[10px] font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition cursor-pointer"
               >
-                <Icon size={18} className="opacity-80" />
-                <span className="text-[9px] font-medium font-heading">{item.label}</span>
+                <Icon size={18} />
+                <span>{item.label}</span>
               </a>
             );
           }
 
           return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex flex-col items-center justify-center space-y-1 relative w-16 h-full ${
-                isActive ? 'text-indigo-600 dark:text-indigo-400 font-semibold' : 'text-[var(--text-secondary)]'
+            <a
+              key={item.section}
+              href={item.path}
+              onClick={(e) => handleNavClick(e, item)}
+              className={`flex flex-col items-center justify-center space-y-1 text-[10px] font-mono transition cursor-pointer ${
+                isActive 
+                  ? 'text-indigo-600 dark:text-indigo-400 font-bold' 
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
-              <Icon size={18} className="opacity-80" />
-              <span className="text-[9px] font-medium font-heading">{item.label}</span>
-              {isActive && (
-                <span className="absolute bottom-1 w-1 h-1 rounded-full bg-indigo-600 dark:bg-indigo-400" />
-              )}
-            </Link>
+              <Icon size={18} />
+              <span>{item.label}</span>
+            </a>
           );
         })}
-      </nav>
+      </div>
 
     </div>
   );

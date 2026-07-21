@@ -164,7 +164,7 @@ export function Journey() {
       {/* TIMELINE CONTAINER */}
       <div className="relative max-w-4xl mx-auto pl-6 sm:pl-10 border-l-2 border-indigo-500/20 dark:border-indigo-500/30 py-4 space-y-8">
         
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           {filteredTimeline.map((node, index) => (
             <motion.div
               key={node.id}

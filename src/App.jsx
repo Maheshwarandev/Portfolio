@@ -2,15 +2,11 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { WorkspaceLayout } from './layouts/WorkspaceLayout';
 
-// Lazy Load pages for optimized performance & code splitting
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const About = lazy(() => import('./pages/About'));
-const Projects = lazy(() => import('./pages/Projects'));
+// Main Rollable Portfolio (Single Page Scrollable View)
+const MainRollablePortfolio = lazy(() => import('./pages/MainRollablePortfolio'));
+
+// Deep-Dive Project Architecture Case Study Page
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
-const TechStack = lazy(() => import('./pages/TechStack'));
-const Journey = lazy(() => import('./pages/Journey'));
-const GitHubActivity = lazy(() => import('./pages/GitHubActivity'));
-const Contact = lazy(() => import('./pages/Contact'));
 
 // Loading Fallback spinner
 const LoadingNode = () => (
@@ -28,16 +24,13 @@ export function App() {
       <WorkspaceLayout>
         <Suspense fallback={<LoadingNode />}>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/projects" element={<Projects />} />
+            {/* 1. Main Single-Page Rollable Portfolio */}
+            <Route path="/" element={<MainRollablePortfolio />} />
+
+            {/* 2. Deep-Dive Project Case Study & Architecture Page */}
             <Route path="/projects/:id" element={<ProjectDetail />} />
-            <Route path="/tech-stack" element={<TechStack />} />
-            <Route path="/journey" element={<Journey />} />
-            <Route path="/github" element={<GitHubActivity />} />
-            <Route path="/contact" element={<Contact />} />
-            
-            {/* Catch-all route redirecting back to home dashboard */}
+
+            {/* Catch-all route redirecting back to rollable main portfolio */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
